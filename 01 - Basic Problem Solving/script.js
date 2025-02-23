@@ -190,9 +190,79 @@ Check if two strings are anagrams of each other.
 Example: "listen", "silent" → true
 */
 
+// Horizontal Stripes
+
+function horizontalStipesGenerator(n) {
+  let arr = [];
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      arr[i] = [];
+    }
+  }
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      if (i % 2 === 0) {
+        arr[i][j] = 1;
+      } else {
+        arr[i][j] = 0;
+      }
+    }
+  }
+  return arr;
+}
+console.log(horizontalStipesGenerator(5));
+
+// Square pattern Generator n*n
+
+function squarePatternGenerator(n) {
+  let arr = [];
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      arr[i] = [];
+    }
+  }
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      if (i === 0 || i === n - 1 || j === 0 || j === n - 1) {
+        arr[i][j] = 1;
+      } else if (i) {
+        if (j >= i && j < n - 2) {
+          arr[i][j] = 1;
+        } else {
+          arr[i][j] = 0;
+        }
+      } else {
+        arr[i][j] = 0;
+      }
+    }
+  }
+  return arr;
+}
+
+console.log(squarePatternGenerator(10));
+
+function isAnalgam(str1, str2) {
+  if (str1.length != str2.length) {
+    return false;
+  }
+  let charCount = {};
+  for (let char of str1) {
+    charCount[char] = (charCount[char] || 0) + 1;
+  }
+
+  for (let char of str2) {
+    if (!charCount[char]) return false;
+    charCount[char]--;
+  }
+
+  return true;
+}
+
+console.log(isAnalgam("listen", "silent"));
+
 // Chessboard Pattern n*n
 
-function printChessboardPattern(n) {
+function drawChessboard(n) {
   let arr = [];
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < n; j++) {
@@ -211,4 +281,51 @@ function printChessboardPattern(n) {
   return arr;
 }
 
-console.log(printChessboardPattern(10));
+function plotData(data, x, y) {
+  console.log(x, y);
+  const arr = data;
+  arr[x][y] = 2;
+  return arr;
+}
+function resetChessBoard(plottedData) {
+  return drawChessboard(plottedData.length);
+}
+
+function findCurrPosition(data) {
+  const arr = data;
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = 0; j < arr.length; j++) {
+      if (arr[i][j] === 2) {
+        return { i, j };
+      }
+    }
+  }
+}
+function moveUp(data) {
+  const { i, j } = findCurrPosition(data);
+  data[i][j] = 1;
+  return plotData(data, i - 1, j);
+}
+function moveDown(data) {
+  const { i, j } = findCurrPosition(data);
+  data[i][j] = 1;
+  return plotData(data, i + 1, j);
+}
+function moveLeft(data) {
+  const { i, j } = findCurrPosition(data);
+  data[i][j] = 1;
+  return plotData(data, i, j - 1);
+}
+function moveRight(data) {
+  const { i, j } = findCurrPosition(data);
+
+  data[i][j] = 1;
+
+  return plotData(data, i, j + 1);
+}
+
+const chessBoard = drawChessboard(8);
+const plottedData = plotData(chessBoard, 1, 1);
+
+const chessMoveRight = moveRight(plottedData);
+console.log(chessMoveRight);
