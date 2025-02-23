@@ -189,3 +189,26 @@ console.log(longestSubstringFinder("abcdabcdefgh"));
 Check if two strings are anagrams of each other.
 Example: "listen", "silent" → true
 */
+
+// Chessboard Pattern n*n
+
+function printChessboardPattern(n) {
+  let arr = [];
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      arr[i] = [];
+    }
+  }
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      if ((i + j) % 2 == 0) {
+        arr[i][j] = 1;
+      } else {
+        arr[i][j] = 0;
+      }
+    }
+  }
+  return arr;
+}
+
+console.log(printChessboardPattern(10));
