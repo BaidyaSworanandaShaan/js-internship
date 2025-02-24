@@ -329,3 +329,92 @@ const plottedData = plotData(chessBoard, 1, 1);
 
 const chessMoveRight = moveRight(plottedData);
 console.log(chessMoveRight);
+
+// Draw Rectangle
+
+// function drawInitialRectangle(size) {
+//   const arr = [];
+//   for (let i = 0; i < size; i++) {
+//     for (let j = 0; j < size; j++) {
+//       arr[i] = [];
+//     }
+//   }
+//   for (let i = 0; i < size; i++) {
+//     for (let j = 0; j < size; j++) {
+//       arr[i][j] = 0;
+//     }
+//   }
+//   return arr;
+// }
+// function drawRectangle(intialRectangle, x, y, size) {
+//   const arr = intialRectangle;
+//   for (let i = x; i < size + x; i++) {
+//     for (let j = y; j < size + y; j++) {
+//       if (i == x || j == y || i === size + x - 1 || j === size + x - 1) {
+//         arr[i][j] = 1;
+//       }
+//     }
+//   }
+
+//   return arr;
+// }
+// const intialRectangle = drawInitialRectangle(10);
+
+// console.log(drawRectangle(intialRectangle, 0, 0, 10));
+// console.log(drawRectangle(intialRectangle, 2, 2, 6));
+// console.log(drawRectangle(intialRectangle, 4, 4, 2));
+
+// const bigRectangle = drawInitialRectangle(20);
+
+// console.log(drawRectangle(bigRectangle, 0, 0, 20));
+// console.log(drawRectangle(bigRectangle, 2, 2, 16));
+// console.log(drawRectangle(bigRectangle, 4, 4, 12));
+// console.log(drawRectangle(bigRectangle, 6, 6, 8));
+// console.log(drawRectangle(bigRectangle, 8, 8, 4));
+
+// Dyanmic Draw Rectangle
+function drawInitialRectangle(size) {
+  const arr = [];
+  for (let i = 0; i < size; i++) {
+    for (let j = 0; j < size; j++) {
+      arr[i] = [];
+    }
+  }
+  for (let i = 0; i < size; i++) {
+    for (let j = 0; j < size; j++) {
+      arr[i][j] = 0;
+    }
+  }
+  return arr;
+}
+
+function drawRectangle(size) {
+  const arr = drawInitialRectangle(size);
+  let sizeofRect = size;
+  let x = 0;
+  y = 0;
+  while (sizeofRect > 0) {
+    console.log(sizeofRect);
+    console.log(x, y);
+    for (let i = x; i < sizeofRect + x; i++) {
+      for (let j = y; j < sizeofRect + y; j++) {
+        if (
+          i == x ||
+          j == y ||
+          i === sizeofRect + x - 1 ||
+          j === sizeofRect + x - 1
+        ) {
+          arr[i][j] = 1;
+        }
+      }
+    }
+    x = x + 2;
+    y = y + 2;
+
+    sizeofRect = sizeofRect - 4;
+  }
+
+  return arr;
+}
+
+console.log(drawRectangle(20));
