@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,6 +15,36 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+
+    <nav class="navbar" id="top">
+      <div class="flex navbar__contents">
+        <div class="navbar__items ">
+          <ul class="navbar__links flex">
+            <li class="navbar__link">
+                <i class="fa-brands fa-facebook"></i>
+            </li>
+            <li class="navbar__link">
+                <i class="fa-brands fa-x-twitter"></i> 
+            </li>
+            <li class="navbar__link">
+                <i class="fa-brands fa-instagram"></i>
+            </li>
+            <li class="navbar__link">
+                <i class="fa-brands fa-snapchat"></i>
+            </li>
+            <li class="navbar__link">
+              <i class="fa-brands fa-linkedin"></i> 
+          </li>
+        </ul>
+        
+        </div>
+        <div class="navbar__search">
+          <li class="navbar__link">
+          <i class="fa-solid fa-magnifying-glass"></i> 
+          </li>
+        </div>
+      </div>
+    </nav>
     <div class="container--primary">
       <!-- Banner Section -->
       <header class="banner">
@@ -310,5 +342,14 @@
         </div>
       </article>
     </div>
+
+    <footer class="footer">
+      <div class="container--secondary">
+        <a href="#top" class="btn btn--dark" style="text-decoration: none;"> To the top</a>
+
+        <span class="footer__text"> Powered by w3.css</span>
+      </div>
+
+    </footer>
   </body>
 </html>
