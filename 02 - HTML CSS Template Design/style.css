@@ -64,6 +64,9 @@ button {
 .mt {
   margin-top: 30px;
 }
+.mb {
+  margin-bottom: 30px;
+}
 /* Container */
 .container--primary {
   width: 95%;
