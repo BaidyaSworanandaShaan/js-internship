@@ -1,0 +1,164 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body,
+input,
+button {
+  color: aliceblue;
+  font-family: "Montserrat", serif;
+}
+.title--main {
+  font-weight: 600;
+  font-style: italic;
+  font-size: 50px;
+}
+.title {
+  font-weight: 700;
+  font-style: italic;
+  font-size: 22px;
+}
+.paragraph {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-top: 20px;
+}
+.paragraph--space {
+  color: #ccb51d;
+  font-size: 20px;
+  letter-spacing: 7px;
+  line-height: 1.7;
+}
+.font--dark {
+  color: black;
+}
+.container {
+  min-height: 100vh;
+  max-height: 100vh;
+  display: block;
+}
+.container * {
+  padding: 20px;
+}
+
+.weight {
+  background-color: black;
+  max-width: 100%;
+}
+.free-trial {
+  background-color: #ff2102;
+}
+.cardio {
+  background-color: #fff;
+}
+.programs {
+  background-color: #3e22ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.agility {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("img/ropeclimbing.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 90px;
+}
+.fitness {
+  background: linear-gradient(rgba(226, 30, 30, 0.5), rgba(0, 0, 0, 0.5)),
+    url("img/fitness.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 90px;
+}
+
+.fitness {
+  background-color: #ff2102;
+  text-align: center;
+}
+
+.goal-setting {
+  background-color: #000000;
+  text-align: center;
+}
+.get-started {
+  background: linear-gradient(rgba(248, 189, 9, 0.5), rgba(0, 0, 0, 0.5)),
+    url("img/woman-doing-sport.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: right;
+  display: flex;
+  align-items: center;
+  padding: 90px 0;
+}
+.get-started {
+  background-color: #f8bd09;
+  order: 1;
+}
+
+.booking {
+  background-color: #090004;
+  order: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.booking input {
+  background: none;
+  border: 1px solid #fff;
+  margin-bottom: 20px;
+  width: 100%;
+  font-size: 16px;
+}
+.booking button {
+  background-color: #ff2102;
+  margin-top: 20px;
+  border: none;
+  padding: 20px 50px;
+}
+
+@media (min-width: 769px) {
+  .container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .title--main {
+    font-size: 130px;
+  }
+
+  .fitness {
+    grid-row: 1 / span 2;
+    grid-column: 1/-1;
+    justify-content: center;
+    align-content: center;
+  }
+  .goal-setting {
+    text-align: right;
+  }
+}
+
+@media (min-width: 1025px) {
+  .container {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1.5fr 2fr 1fr;
+  }
+  .agility {
+    grid-row: 2/-1;
+  }
+  .fitness {
+    grid-column: 2 / span 2;
+    grid-row: 2/3;
+  }
+  .booking {
+    grid-row: 2 / -1;
+    grid-column: 4 / -1;
+  }
+}
