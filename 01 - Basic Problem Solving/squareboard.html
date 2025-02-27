@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    .container--black {
+      height: 20px;
+      width: 20px;
+      background-color: black;
+      display: inline-block;
+      border: 1px solid white;
+    }
+    .container--white {
+      height: 20px;
+      width: 20px;
+      background-color: whitesmoke;
+      display: inline-block;
+      border: 1px solid white;
+    }
+  </style>
+  <body>
+    <h1>Square Board of N*N Matrix</h1>
+
+    Enter Dimension
+    <input type="text" id="input-text" value="10" />
+    <button id="btn-submit" type="submit">Submit</button>
+
+    <h2>Output:</h2>
+    <div id="output"></div>
+  </body>
+  <script>
+    const btnSubmit = document.getElementById("btn-submit");
+    const outputSection = document.getElementById("output");
+
+    function drawInitialRectangle(size) {
+      const arr = [];
+      for (let i = 0; i < size; i++) {
+        for (let j = 0; j < size; j++) {
+          arr[i] = [];
+        }
+      }
+      for (let i = 0; i < size; i++) {
+        for (let j = 0; j < size; j++) {
+          arr[i][j] = 0;
+          const box = document.createElement("div");
+          box.id = `container${i}-${j}`;
+          box.className = "container--white";
+          output.appendChild(box);
+        }
+        const breakline = document.createElement("br");
+        output.appendChild(breakline);
+      }
+      return arr;
+    }
+
+    function drawRectangle(size) {
+      const arr = drawInitialRectangle(size);
+      let sizeofRect = size;
+      let x = 0;
+      y = 0;
+      while (sizeofRect > 0) {
+        console.log(sizeofRect);
+        console.log(x, y);
+        for (let i = x; i < sizeofRect + x; i++) {
+          for (let j = y; j < sizeofRect + y; j++) {
+            if (
+              i == x ||
+              j == y ||
+              i === sizeofRect + x - 1 ||
+              j === sizeofRect + x - 1
+            ) {
+              arr[i][j] = 1;
+              const box = document.getElementById(`container${i}-${j}`);
+
+              if (box != null) {
+                console.log(box);
+                box.classList.replace("container--white", "container--black");
+              }
+            }
+          }
+        }
+        x = x + 2;
+        y = y + 2;
+
+        sizeofRect = sizeofRect - 4;
+      }
+
+      return arr;
+    }
+    btnSubmit.addEventListener("click", function () {
+      const dimension = document.getElementById("input-text").value;
+      console.log(drawRectangle(Number(dimension)));
+    });
+  </script>
+</html>
