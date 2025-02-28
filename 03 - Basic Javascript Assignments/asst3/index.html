@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin-top: 20px;
+      }
+      .relative-container {
+        position: relative;
+        background-color: red;
+        width: 400px;
+        height: 400px;
+        overflow: hidden;
+      }
+      .img-container {
+        position: absolute;
+        height: 400px;
+        width: 400px;
+
+        transition: left 0.5s ease-in-out;
+      }
+      .img-container--active {
+        display: block;
+      }
+      .img-container--active {
+        display: block;
+      }
+      img {
+        width: 100%;
+        height: 100%;
+      }
+      .active-border {
+        border: 5px solid red;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="relative-container" id="main-container"></div>
+    </div>
+    <div class="container" id="nav-container"></div>
+    <div class="container btn-container">
+      <button class="btn" id="btn-back">BACK</button>
+      <button class="btn" id="btn-next">NEXT</button>
+    </div>
+  </body>
+  <script src="script.js"></script>
+</html>
