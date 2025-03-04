@@ -67,6 +67,8 @@ btnBack.addEventListener("click", function (e) {
   }
   console.log(slideNumber);
 });
+
+// repeat
 setInterval(() => {
   if (slideNumber < imgGallery.length) {
     getNextSlide();
