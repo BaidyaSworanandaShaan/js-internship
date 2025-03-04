@@ -67,3 +67,10 @@ btnBack.addEventListener("click", function (e) {
   }
   console.log(slideNumber);
 });
+setInterval(() => {
+  if (slideNumber < imgGallery.length) {
+    getNextSlide();
+  } else {
+    getFirstSlide();
+  }
+}, 4000);
