@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    .container {
+      width: 90%;
+      margin: 0 auto;
+    }
+    .main-container {
+      height: 500px;
+      width: 500px;
+      overflow: hidden;
+    }
+    .img-container {
+      display: flex;
+    }
+    .image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .btn-container {
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+
+  <body>
+    <div class="container">
+      <div id="main-container"></div>
+    </div>
+    <!-- <div class="container" id="nav-container"></div> -->
+    <div class="container btn-container">
+      <button class="btn" id="btn-back">BACK</button>
+      <button class="btn" id="btn-next">NEXT</button>
+    </div>
+  </body>
+  <script src="script2.js"></script>
+</html>
