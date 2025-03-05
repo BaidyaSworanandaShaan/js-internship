@@ -112,17 +112,35 @@ function loopy() {
 
   //   Using Map and Filter
 
-  movieLists = movieLists.map((movieItem) => {
-    return movieItem.videos.map((videoItem) => {
-      return videoItem.boxarts
-        .filter((item) => item.width === 150)
-        .map((item) => ({
-          id: videoItem.id,
-          title: videoItem.title,
-          boxartUrl: videoItem.url,
-        }));
-    });
-  });
+  // movieLists = movieLists.map((movieItem) => {
+  //   return movieItem.videos.map((videoItem) => {
+  //     return videoItem.boxarts
+  //       .filter((item) => item.width === 150)
+  //       .map((item) => ({
+  //         id: videoItem.id,
+  //         title: videoItem.title,
+  //         boxartUrl: videoItem.url,
+  //       }));
+  //   });
+  // });
+
+  // Using Map and Filter and Reduce
+  movieLists = movieLists.reduce((acc, movieItem) => {
+    return acc.concat(
+      movieItem.videos.reduce((innerAcc, videoItem) => {
+        return innerAcc.concat(
+          videoItem.boxarts
+            .filter((item) => item.width === 150)
+            .map((item) => ({
+              id: videoItem.id,
+              title: videoItem.title,
+              boxartUrl: videoItem.url,
+            }))
+        );
+      }, [])
+    );
+  }, []);
+
   console.log(JSON.stringify(movieLists, null, " "));
   return movieLists;
 }
