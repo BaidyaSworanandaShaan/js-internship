@@ -37,13 +37,13 @@ function startAnimation() {
       parseInt(initialCircleLeft),
     ]);
   }
-
   circlePosArray.forEach((coordinates, index) => {
-    let [initialRedX, initialRedY] = coordinates;
+    let initialRedX = Math.floor(Math.random() * 450);
+    let initialRedY = Math.floor(Math.random() * 450);
+    let directionRedX = Math.floor(Math.random() * 2) === 0 ? 1 : -1;
+    let directionRedY = Math.floor(Math.random() * 2) === 0 ? 1 : -1;
 
     setInterval(() => {
-      initialRedX = (initialRedX + Math.floor(Math.random() * 450)) % 450;
-      initialRedY = (initialRedY + Math.floor(Math.random() * 450)) % 450;
       initialRedX += directionRedX;
       initialRedY += directionRedY;
 
@@ -53,11 +53,12 @@ function startAnimation() {
       if (initialRedY >= 450 || initialRedY <= 0) {
         directionRedY *= -1;
       }
+
       const item = boxEl.childNodes[index];
 
-      item.style.top = initialRedX + "px";
-      item.style.left = initialRedY + "px";
-    }, 10);
+      item.style.top = initialRedY + "px";
+      item.style.left = initialRedX + "px";
+    }, 5);
   });
 
   //   Animation
