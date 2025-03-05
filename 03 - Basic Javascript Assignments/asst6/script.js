@@ -9,8 +9,6 @@ function randomFunction(min, max) {
 
 let numberOfCircle = 10;
 
-let directionRedX = 1;
-let directionRedY = 1;
 boxEl.classList.add("box");
 containerEl.appendChild(boxEl);
 while (numberOfCircle > 0) {
@@ -40,8 +38,8 @@ function startAnimation() {
   circlePosArray.forEach((coordinates, index) => {
     let initialRedX = Math.floor(Math.random() * 450);
     let initialRedY = Math.floor(Math.random() * 450);
-    let directionRedX = Math.floor(Math.random() * 2) === 0 ? 1 : -1;
-    let directionRedY = Math.floor(Math.random() * 2) === 0 ? 1 : -1;
+    let directionRedX = 1;
+    let directionRedY = 1;
 
     setInterval(() => {
       initialRedX += directionRedX;
