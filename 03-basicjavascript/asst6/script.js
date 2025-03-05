@@ -141,11 +141,12 @@ circleWrapper.forEach((element) => {
     element.style.cursor = "pointer";
   });
   element.addEventListener("click", () => {
-    element.style.backgroundColor = "green";
+    element.remove();
   });
 });
 
 function gameLoop() {
+  console.log(gameState);
   gameState.forEach((item, index) => {
     item.x += item.dx;
     item.y += item.dy;
@@ -165,7 +166,9 @@ function gameLoop() {
 function render(gameState) {
   gameState.forEach((element, index) => {
     const circleEl = document.getElementById(`circle-${index}`);
-    circleEl.style.top = element.y + "px";
-    circleEl.style.left = element.x + "px";
+    if (circleEl) {
+      circleEl.style.top = element.y + "px";
+      circleEl.style.left = element.x + "px";
+    }
   });
 }
