@@ -1,83 +1,4 @@
-// const containerEl = document.getElementById("container");
-// const boxEl = document.createElement("div");
-// const btnEl = document.getElementById("btn-animation");
-// const btnStopEl = document.getElementById("btn-stop");
-
-// function randomFunction(min, max) {
-//   return Math.round(Math.random() * (max - min) + min);
-// }
-
-// function collisionDetection(circlePosArray) {}
-// let numberOfCircle = 10;
-
-// boxEl.classList.add("box");
-// containerEl.appendChild(boxEl);
-// while (numberOfCircle > 0) {
-//   const circleEl = document.createElement("div");
-//   circleEl.id = `circle-${numberOfCircle}`;
-//   circleEl.classList.add("circle");
-//   boxEl.appendChild(circleEl);
-//   numberOfCircle--;
-// }
-
-// containerEl.appendChild(boxEl);
-
-// const totalNumberofCircle = boxEl.childNodes.length;
-
-// function startAnimation() {
-//   const circlePosArray = [];
-//   for (let index = 0; index < totalNumberofCircle; index++) {
-//     const item = boxEl.childNodes[index];
-//     const initialCircleTop = window.getComputedStyle(item).top;
-//     const initialCircleLeft = window.getComputedStyle(item).left;
-
-//     circlePosArray.push([
-//       parseInt(initialCircleTop),
-//       parseInt(initialCircleLeft),
-//     ]);
-//   }
-//   circlePosArray.forEach((coordinates, index) => {
-//     let [x, y] = coordinates;
-
-//     let initialRedX = Math.floor(Math.random() * 450);
-//     let initialRedY = Math.floor(Math.random() * 450);
-//     let directionRedX = 1;
-//     let directionRedY = 1;
-//     const item = boxEl.childNodes[index];
-
-//     item.addEventListener("mouseenter", function () {
-//       item.style.cursor = "pointer";
-//     });
-//     item.addEventListener("click", function () {
-//       if (item) {
-//         item.remove();
-//       }
-//     });
-
-//     setInterval(() => {
-//       initialRedX += directionRedX;
-//       initialRedY += directionRedY;
-
-//       if (initialRedX >= 450 || initialRedX <= 0) {
-//         directionRedX *= -1;
-//       }
-//       if (initialRedY >= 450 || initialRedY <= 0) {
-//         directionRedY *= -1;
-//       }
-
-//       item.style.top = initialRedY + "px";
-//       item.style.left = initialRedX + "px";
-//       x = parseInt(item.style.top);
-//       y = parseInt(item.style.left);
-//       circlePosArray[index] = [x, y];
-//       collisionDetection(circlePosArray);
-//       //
-//     }, 5);
-//   });
-
-//   //   Animation
-// }
-// startAnimation();
+const smashEffect = new Audio("music/smash.mp3");
 
 let gameState = [
   { x: 50, y: 50, dx: 2, dy: 2 },
@@ -97,6 +18,7 @@ let gameState = [
 const containerEl = document.getElementById("container");
 const boxEl = document.createElement("div");
 boxEl.classList.add("box");
+
 containerEl.appendChild(boxEl);
 
 const gameLoopId = setInterval(gameLoop, 25);
@@ -125,11 +47,16 @@ function collisionDetection() {
 gameState.forEach((element, index) => {
   const circleEl = document.createElement("div");
   const img = document.createElement("img");
+  img.src = "img/ant.png";
+  img.width = 50;
+  img.height = 50;
   circleEl.classList.add("circle");
   circleEl.id = `circle-${index}`;
 
   circleEl.style.top = element.x + "px";
   circleEl.style.left = element.y + "px";
+
+  circleEl.appendChild(img);
   boxEl.appendChild(circleEl);
 });
 
@@ -141,7 +68,12 @@ circleWrapper.forEach((element) => {
     element.style.cursor = "pointer";
   });
   element.addEventListener("click", () => {
-    element.remove();
+    const deadAnt = element.querySelector("img");
+    deadAnt.src = "img/blood.png";
+    smashEffect.play();
+    setTimeout(() => {
+      element.remove();
+    }, 300);
   });
 });
 
