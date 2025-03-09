@@ -85,11 +85,11 @@ function generateEnemies() {
 }
 
 function enemies() {
-  if (count < 3) {
-    generateEnemies();
-  } else {
-    clearInterval(enemies);
-  }
+  // if (count < 3) {
+  //   generateEnemies();
+  // } else {
+  //   clearInterval(enemies);
+  // }
 
-  // generateEnemies();
+  generateEnemies();
 }
