@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shooting Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -19,8 +25,19 @@
               alt=""
             />
           </div>
-
           <div id="asteroid"></div>
+          <div class="gameover-container">
+            <div class="gameover-content">
+              <h2>GAME OVER</h2>
+              <p>
+                You fought bravely, but the battle is over! <br />
+                Final Score: <span id="final-score"></span> 🔥
+              </p>
+            </div>
+            <div>
+              <button id="reset-btn">Play Again</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

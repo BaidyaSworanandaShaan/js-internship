@@ -6,12 +6,53 @@
 html,
 body {
   height: 100%;
+
+  color: #ffff;
+}
+.gameover-container {
+  display: flex;
+  width: 90%;
+  margin: 0 auto;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+.gameover-content h2 {
+  font-family: "Press Start 2P", system-ui;
+  font-size: 35px;
+  text-align: center;
+}
+.gameover-content p {
+  font-family: "Montserrat", sans-serif;
+  text-align: center;
+  line-height: 1.8;
+  margin: 20px 0;
+}
+#reset-btn {
+  font-family: "Montserrat", sans-serif;
+  background-color: white;
+  padding: 6px 7px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  color: #0e1e37;
+}
+#reset-btn:hover {
+  cursor: pointer;
+  color: white;
+  background-color: #0e1e37;
+  border: 1px solid white;
 }
 .container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100%;
 }
 .background {
   background-image: url("img//background.jpg");

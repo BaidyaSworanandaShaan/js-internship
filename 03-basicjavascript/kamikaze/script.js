@@ -1,13 +1,21 @@
+const gamePointEffect = new Audio("sound/gamepoints.wav");
+const gameOverEffect = new Audio("sound/gameover.wav");
+
 const bulletContainer = document.getElementById("bullet-container");
 const rocketEl = document.querySelector("#rocket img");
 const asteroidEl = document.getElementById("asteroid");
 const backgroundEl = document.querySelector(".background");
+const gameOverEl = document.querySelector(".gameover-container");
+const finalScoreEl = document.getElementById("final-score");
+const resetBtn = document.getElementById("reset-btn");
+
 let currentRocketPostion = parseInt(rocketEl.style.left);
 let currentBulletContainer = parseInt(bulletContainer.style.left);
 let rocketLane = 1;
 let backgroundHeight = 600;
 let gameOver = false;
 let bgPosition = 0;
+let finalScore = 0;
 
 const backgroundLoop = setInterval(() => {
   bgPosition += 2;
@@ -20,6 +28,9 @@ document.body.addEventListener("keydown", function (event) {
     executeBullets();
   }
   switchPosition(key);
+});
+resetBtn.addEventListener("click", function (event) {
+  location.reload();
 });
 
 function executeBullets() {
@@ -47,6 +58,9 @@ function executeBullets() {
         bullet.offsetTop + 50 > enemy.offsetTop
       ) {
         console.log("BULLET HIT ENEMY!");
+        finalScore += 10;
+        gamePointEffect.currentTime = 0;
+        gamePointEffect.play();
         clearInterval(bulletInterval);
         bulletContainer.removeChild(bullet);
         asteroidEl.removeChild(enemy);
@@ -71,7 +85,7 @@ function switchPosition(key) {
   rocketEl.style.left = currentRocketPostion + "%";
 }
 
-const spawnId = setInterval(generateEnemies, 1000);
+const spawnId = setInterval(generateEnemies, 500);
 let count = 0;
 let enemyCount = 1;
 
@@ -92,10 +106,11 @@ function generateEnemies() {
     enemy.style.top = currentTop + 10 + "px";
 
     if (currentTop >= backgroundHeight) {
+      finalScore += 5;
       clearInterval(fallInterval);
       asteroidEl.removeChild(enemy);
     }
-    // console.log(rocketEl.offsetLeft, rocketEl.offsetTop);
+
     if (
       rocketEl.offsetLeft < enemy.offsetLeft + 50 &&
       rocketEl.offsetLeft + 50 > enemy.offsetLeft &&
@@ -104,10 +119,18 @@ function generateEnemies() {
     ) {
       console.log("COLLIDE");
       // Game Over Condition
+
       gameOver = true;
+      document.querySelectorAll(".asteroid-img").forEach((enemy) => {
+        asteroidEl.removeChild(enemy);
+      });
+      rocketEl.style.opacity = "0.4";
+      finalScoreEl.textContent = String(finalScore);
+      gameOverEffect.play();
       clearInterval(spawnId);
       clearInterval(fallInterval);
       clearInterval(backgroundLoop);
+      gameOverEl.style.display = "flex";
     }
-  }, 50);
+  }, 25);
 }
