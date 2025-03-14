@@ -1,11 +1,12 @@
 class Ant {
-  constructor(id, x, y, dx, dy, container) {
+  constructor(id, x, y, dx, dy, container, gameInstance) {
     this.id = id;
     this.x = x;
     this.y = y;
     this.dx = dx;
     this.dy = dy;
     this.container = container;
+    this.gameInstance = gameInstance;
     this.element = this.createElement();
   }
   createElement() {
@@ -29,7 +30,7 @@ class Ant {
     });
 
     circleEl.addEventListener("click", () => {
-      this.antSmash();
+      this.antSmash(this.container);
     });
     return circleEl;
   }
@@ -39,6 +40,8 @@ class Ant {
     const smashEffect = new Audio("music/smash.mp3");
     smashEffect.play();
     setTimeout(() => {
+      this.container.removeChild(this.element);
+      this.gameInstance.removeAnt(this.id);
       this.element.remove();
     }, 300);
   }
@@ -51,37 +54,51 @@ class Ant {
     this.element.style.top = `${this.y}px`;
     this.element.style.left = `${this.x}px`;
   }
+  getPosition() {
+    return { x: this.x, y: this.y, dx: this.dx, dy: this.dy };
+  }
 }
 
 class mainGame {
   constructor(containerId) {
     this.containerEl = document.getElementById(containerId);
+    this.saveBtn = document.getElementById("save-btn");
     this.boxEl = document.createElement("div");
     this.boxEl.classList.add("box");
     this.containerEl.appendChild(this.boxEl);
     this.ants = [];
     this.init();
+    this.saveBtn.addEventListener("click", () => this.savePresentState());
   }
   init() {
-    const initialState = [
-      { x: 50, y: 50, dx: 2, dy: 2 },
-      { x: 200, y: 248, dx: -2, dy: 2 },
-      { x: 232, y: 123, dx: 2, dy: -2 },
-      { x: 432, y: 412, dx: -2, dy: -2 },
-      { x: 324, y: 252, dx: 2, dy: 2 },
-      { x: 212, y: 12, dx: -2, dy: 2 },
-      { x: 78, y: 350, dx: 2, dy: -2 },
-      { x: 145, y: 278, dx: -2, dy: 2 },
-      { x: 412, y: 34, dx: 2, dy: -2 },
-      { x: 378, y: 189, dx: -2, dy: -2 },
-      { x: 299, y: 400, dx: 2, dy: 2 },
-      { x: 170, y: 85, dx: -2, dy: 2 },
-    ];
+    const savedState = localStorage.getItem("remainingAnts");
+
+    const initialState =
+      Array.isArray(JSON.parse(savedState)) && JSON.parse(savedState).length
+        ? JSON.parse(savedState)
+        : [
+            { x: 50, y: 50, dx: 2, dy: 2 },
+            { x: 200, y: 248, dx: -2, dy: 2 },
+            { x: 232, y: 123, dx: 2, dy: -2 },
+            { x: 432, y: 412, dx: -2, dy: -2 },
+            { x: 324, y: 252, dx: 2, dy: 2 },
+            { x: 212, y: 12, dx: -2, dy: 2 },
+            { x: 78, y: 350, dx: 2, dy: -2 },
+            { x: 145, y: 278, dx: -2, dy: 2 },
+            { x: 412, y: 34, dx: 2, dy: -2 },
+            { x: 378, y: 189, dx: -2, dy: -2 },
+            { x: 299, y: 400, dx: 2, dy: 2 },
+            { x: 170, y: 85, dx: -2, dy: 2 },
+          ];
+
     this.ants = initialState.map(
       (state, index) =>
-        new Ant(index, state.x, state.y, state.dx, state.dy, this.boxEl)
+        new Ant(index, state.x, state.y, state.dx, state.dy, this.boxEl, this)
     );
     this.gameLoopId = setInterval(() => this.gameLoop(), 25);
+  }
+  removeAnt(id) {
+    this.ants = this.ants.filter((ant) => ant.id !== id);
   }
   collisionDetection() {
     for (let i = 0; i < this.ants.length; i++) {
@@ -106,6 +123,13 @@ class mainGame {
   gameLoop() {
     this.ants.forEach((ant) => ant.move());
     this.collisionDetection();
+  }
+  savePresentState() {
+    const state = this.ants.map((ant) => ant.getPosition());
+    console.log(state);
+    let gameState = JSON.stringify(state);
+    localStorage.setItem("remainingAnts", gameState);
+    clearInterval(this.gameLoopId);
   }
 }
 new mainGame("container");
