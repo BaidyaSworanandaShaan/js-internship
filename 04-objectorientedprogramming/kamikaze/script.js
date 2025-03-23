@@ -7,6 +7,7 @@ const asteroidEl = document.getElementById("asteroid");
 const backgroundEl = document.querySelector(".background");
 const gameOverEl = document.querySelector(".gameover-container");
 const finalScoreEl = document.getElementById("final-score");
+const highScoreEl = document.getElementById("high-score");
 const resetBtn = document.getElementById("reset-btn");
 
 let currentRocketPostion = parseInt(rocketEl.style.left);
@@ -126,6 +127,18 @@ function generateEnemies() {
       });
       rocketEl.style.opacity = "0.4";
       finalScoreEl.textContent = String(finalScore);
+      let highScore = localStorage.getItem("highScore") || 0;
+      if (localStorage.getItem("highScore") === null) {
+        localStorage.setItem("highScore", finalScore);
+        highScoreEl.textContent = String(finalScore);
+      } else {
+        highScore = Number(highScore);
+        if (finalScore > highScore) {
+          localStorage.setItem("highScore", finalScore);
+          highScoreEl.textContent = String(finalScore);
+        }
+      }
+
       gameOverEffect.play();
       clearInterval(spawnId);
       clearInterval(fallInterval);

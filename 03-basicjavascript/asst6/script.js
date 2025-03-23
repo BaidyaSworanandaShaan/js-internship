@@ -82,10 +82,10 @@ function gameLoop() {
   gameState.forEach((item, index) => {
     item.x += item.dx;
     item.y += item.dy;
-    if (item.x >= 450 || item.x <= 0) {
+    if (item.x >= 600 || item.x <= 0) {
       item.dx *= -1;
     }
-    if (item.y >= 450 || item.y <= 0) {
+    if (item.y >= 600 || item.y <= 0) {
       item.dy *= -1;
     }
   });

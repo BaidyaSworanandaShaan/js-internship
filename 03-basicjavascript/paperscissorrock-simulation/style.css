@@ -1,0 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  background-color: black;
+  color: white;
+  height: 100%;
+}
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+#game-box {
+  height: 600px;
+  width: 600px;
+  border: 5px solid white;
+  position: relative;
+}
