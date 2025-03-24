@@ -7,6 +7,7 @@ body {
   background-color: black;
   color: white;
   height: 100%;
+  font-family: "Press Start 2P", system-ui;
 }
 .main-container {
   display: flex;
@@ -15,9 +16,29 @@ body {
   justify-content: center;
   height: 100%;
 }
+.result-section {
+  margin: 20px 0;
+}
 #game-box {
   height: 600px;
   width: 600px;
   border: 5px solid white;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#btn--restart {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #fff;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  background: none;
+  color: #fff;
+  margin-top: 30px;
+  display: none;
+  cursor: pointer;
 }

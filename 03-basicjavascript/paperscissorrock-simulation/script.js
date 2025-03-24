@@ -1,6 +1,16 @@
 const gameContainerEl = document.getElementById("game-box");
-let gameState = [];
 
+const paperCountEl = document.getElementById("paper-count");
+const scissorsCountEl = document.getElementById("scissors-count");
+const rockCountEl = document.getElementById("rock-count");
+const winnerEl = document.getElementById("winner");
+const btnRestartEl = document.getElementById("btn--restart");
+
+let gameState = [];
+let paperCount;
+let rockCount;
+let scissorsCount;
+let gameOver = false;
 for (let i = 0; i < 10; i++) {
   let type;
   if (i < 3) type = "Paper";
@@ -46,6 +56,44 @@ function updateImage(loserIndex, winnerIndex) {
     gameState[loserIndex].type = gameState[winnerIndex].type;
   }
 }
+
+function gameOverCondition(winner) {
+  gameContainerEl.innerHTML = "";
+  winnerEl.textContent = "Final Winner : " + winner;
+  gameContainerEl.appendChild(winnerEl);
+  btnRestartEl.style.display = "block";
+  gameContainerEl.appendChild(btnRestartEl);
+  btnRestartEl.addEventListener("click", () => {
+    location.reload();
+  });
+}
+function updateCount() {
+  const paperElements = gameState.filter((element) => element.type === "Paper");
+  const scissorsElements = gameState.filter(
+    (element) => element.type === "Scissors"
+  );
+  const rockElements = gameState.filter((element) => element.type === "Rock");
+
+  paperCountEl.textContent = paperElements.length;
+  scissorsCountEl.textContent = scissorsElements.length;
+  rockCountEl.textContent = rockElements.length;
+
+  if (
+    paperElements.length === 10 ||
+    scissorsElements.length === 10 ||
+    rockElements.length === 10
+  ) {
+    gameOver = true;
+    clearInterval(gameLoopId);
+    if (paperElements.length === 10) {
+      gameOverCondition("Paper");
+    } else if (scissorsElements.length === 10) {
+      gameOverCondition("Scissor");
+    } else {
+      gameOverCondition("Rock");
+    }
+  }
+}
 function collisionDetection() {
   for (let i = 0; i < gameState.length; i++) {
     for (let j = i + 1; j < gameState.length; j++) {
@@ -64,7 +112,7 @@ function collisionDetection() {
             : gameState.indexOf(obj1);
 
         updateImage(loserIndex, winnerIndex);
-
+        updateCount();
         // Chat GPT Referred for algorithm
         let overlap = 51 - distance;
 
