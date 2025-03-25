@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paper Scissor Rock</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="title"></div>
+    <div class="main-container">
+      <h4 class="main-title">PAPER VS SCISSOR VS ROCK SIMULATION</h4>
+      <div class="result-section">
+        <img src="img/paper.png" width="40px" alt="" />
+        <span id="paper-count">3</span>
+        <img src="img/scissors.png" width="40px" alt="" />
+        <span id="scissors-count">3</span>
+        <img src="img/stone.png" width="40px" alt="" />
+        <span id="rock-count">3</span>
+      </div>
+
+      <div id="game-box">
+        <div id="winner"></div>
+        <button id="btn--restart">Restart Simulation</button>
+      </div>
+    </div>
+  </body>
+  <script src="script.js"></script>
+</html>
