@@ -58,6 +58,8 @@ function gameOverCondition() {
 }
 
 function collisionDetection(pipe) {
+  let extraLeftPadding = 40;
+  let extraHeightPadding = 7;
   // With ground
   if (flappyBirdEl.offsetTop > groundImgEl.offsetTop - 40) {
     console.log("COLLIDE");
@@ -65,6 +67,28 @@ function collisionDetection(pipe) {
   }
 
   // With pipes
+  if (pipe.classList.contains("pipe-top")) {
+    if (pipe.offsetLeft + pipe.offsetWidth > flappyBirdEl.offsetLeft) {
+      if (
+        flappyBirdEl.offsetLeft + extraLeftPadding >= pipe.offsetLeft &&
+        flappyBirdEl.offsetTop + extraHeightPadding <
+          pipe.offsetTop + pipe.offsetHeight
+      ) {
+        console.log("COLLIDE TOP");
+        gameOverCondition();
+      }
+    }
+  } else if (pipe.classList.contains("pipe-bottom")) {
+    if (pipe.offsetLeft + pipe.offsetWidth > flappyBirdEl.offsetLeft) {
+      if (
+        flappyBirdEl.offsetLeft + extraLeftPadding >= pipe.offsetLeft &&
+        flappyBirdEl.offsetTop > pipe.offsetTop - extraLeftPadding
+      ) {
+        console.log("BOTTOM PIPE COLLISION");
+        gameOverCondition();
+      }
+    }
+  }
 }
 const gameLoop = setInterval(() => {
   bgPosition -= 2;
