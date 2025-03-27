@@ -1,0 +1,67 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  flex-direction: column;
+}
+
+.background-img {
+  position: relative;
+  width: 100%;
+  height: 600px;
+}
+.background-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.flappyBird-img {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+
+  left: 25%;
+}
+.flappyBird-img img {
+  height: 10%;
+  width: 10%;
+}
+.pipe {
+  width: 40px;
+  background-color: #9e9e9e;
+  position: absolute;
+
+  opacity: 1;
+  background-image: linear-gradient(
+    to right,
+    #4cb051,
+    #4cb051 8.5px,
+    #99cc62 8.5px,
+    #99cc62
+  );
+  background-size: 17px 100%;
+}
+.pipe-top {
+  top: 0;
+}
+.pipe-bottom {
+  bottom: 130px;
+}
+
+.ground-img {
+  width: 100%;
+  height: 135px;
+  background-image: url("img/ground.png");
+  background-repeat: repeat-x;
+  background-size: cover;
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+}
