@@ -125,7 +125,7 @@ class Pipe {
 
     if (
       this.bird.flappyBirdEl.offsetTop >
-      this.game.backgroundImgEl.offsetHeight - 40
+      this.game.groundImgEl.offsetTop - 30
     ) {
       console.log("COLLIDE");
       this.game.gameOverCondition();
