@@ -8,7 +8,9 @@ class Game {
     this.bgPosition = 0;
     this.bird = new Bird(this);
     this.gameScore = 0;
+
     this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleKeyUp = this.handleKeyUp.bind(this);
     this.init();
   }
 
@@ -16,13 +18,18 @@ class Game {
     this.gameLoop = setInterval(() => this.startingPoint(), 15);
     this.pipeGeneration = setInterval(() => {
       this.pipes.push(new Pipe(this.bird, this));
-    }, 2000);
+    }, 1500);
 
     document.body.addEventListener("keydown", this.handleKeyDown);
+    document.body.addEventListener("keyup", this.handleKeyUp);
   }
 
   handleKeyDown(event) {
     this.bird.handleKeyDown(event);
+  }
+
+  handleKeyUp(event) {
+    this.bird.handleKeyUp(event);
   }
 
   startingPoint() {
@@ -95,10 +102,11 @@ class Pipe {
     [this.pipeTopEl, this.pipeBottomEl].forEach((pipe) => {
       const pipeLeft = parseInt(pipe.style.left);
       pipe.style.left = `${pipeLeft - 2}px`;
-      const mySet = new Set();
 
       if (pipeLeft <= -50) {
-        pipe.remove();
+        this.pipeTopEl.remove();
+        this.pipeBottomEl.remove();
+        this.game.pipes = this.game.pipes.filter((pipe) => pipe !== this);
       }
 
       this.collisionDetection(pipe);
@@ -112,13 +120,13 @@ class Pipe {
         pointSound.play();
 
         this.game.gameScore++;
-        console.log(this.game.gameScore);
-        console.log(this.game.gameScoreEl);
+        console.log(this.game.pipes);
+
         this.game.gameScoreEl.textContent = this.game.gameScore;
       }
     });
   }
-  pointCount(pipe) {}
+
   collisionDetection(pipe) {
     let extraLeftPadding = 40;
     let extraHeightPadding = 7;
@@ -197,6 +205,13 @@ class Bird {
       flySound.play();
       this.flappyBirdEl.style.top =
         parseInt(this.flappyBirdEl.style.top) - 40 + "px";
+
+      event.preventDefault();
+    }
+  }
+  handleKeyUp(event) {
+    console.log("key up fired");
+    if (event.code === "Space") {
       event.preventDefault();
     }
   }

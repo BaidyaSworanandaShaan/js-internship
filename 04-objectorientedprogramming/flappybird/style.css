@@ -45,6 +45,14 @@ body {
   height: 10%;
   width: 10%;
 }
+.rotate-bird--up {
+  transition: transform 0.1s ease-in-out;
+  transform: rotate(-20deg);
+}
+.rotate-bird--down {
+  transition: transform 0.1s ease-in-out;
+  transform: rotate(20deg);
+}
 
 .flappyBird-img--dead img {
   transform: rotate(90deg);
