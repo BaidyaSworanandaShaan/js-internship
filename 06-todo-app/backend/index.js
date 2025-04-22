@@ -2,8 +2,9 @@ const express = require("express");
 
 const db = require("./db/db");
 const app = express();
-
+const cors = require("cors");
 const todoRoutes = require("../backend/routes/todoRoutes");
+app.use(cors());
 app.use(express.json());
 
 app.use("/todos", todoRoutes);

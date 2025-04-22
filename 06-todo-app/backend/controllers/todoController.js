@@ -2,6 +2,7 @@ const Todo = require("../models/Todos");
 
 const createTodo = (req, res) => {
   const { title, description, isCompleted } = req.body;
+  console.log(title, description, isCompleted);
   if (!title || !description || !isCompleted) {
     return res
       .status(400)

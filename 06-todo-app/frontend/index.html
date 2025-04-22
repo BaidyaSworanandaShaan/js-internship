@@ -4,9 +4,42 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Todo Application</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h2>Todo Application</h2>
+    <div class="container">
+      <div class="title">
+        <h2 class="title--main">Notes</h2>
+        <span class="title--sub">Organize Your Day, One Task at a Time</span>
+      </div>
+      <button id="btn-display" class="btn">ADD NEW TASK</button>
+
+      <form id="todoFormAdd" class="todo-form">
+        <input type="text" placeholder="Title" id="todoTitle" required />
+        <select id="todoOptions" name="options" required>
+          <option value="">Status</option>
+          <option value="0">Pending</option>
+          <option value="1">Completed</option>
+        </select>
+        <input
+          class="descriptionInput"
+          type="text"
+          placeholder="Description"
+          id="todoDescription"
+          required
+        />
+
+        <button type="submit" class="btn" id="btn-add">Add</button>
+      </form>
+
+      <div class="todos-lists"></div>
+    </div>
+    <script src="script.js"></script>
   </body>
 </html>
