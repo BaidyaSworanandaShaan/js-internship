@@ -1,14 +1,11 @@
 const Todo = require("../models/Todos");
+const { validateTodo } = require("../validations/todoValidation");
 
 const createTodo = (req, res) => {
   const { title, description, isCompleted } = req.body;
   console.log(title, description, isCompleted);
-  if (!title || !description || !isCompleted) {
-    return res
-      .status(400)
-      .json({ message: "Title, Description and Status is Required" });
-  }
-
+  const error = validateTodo(title, description, isCompleted);
+  if (error) return res.status(400).json({ message: error });
   Todo.createTodo(title, description, isCompleted, (err, result) => {
     if (err) {
       console.error("Error inserting user", err);
@@ -46,7 +43,7 @@ const getSingleTodo = (req, res) => {
       console.error("Error fetching data");
       return res.status(400).json({ message: "Failed To Fetch Todo  " });
     }
-    res.status(201).json({
+    res.status(200).json({
       message: "Todo Fetched Succesfully",
       result,
     });
@@ -71,11 +68,8 @@ const deleteTodo = (req, res) => {
 const updateTodo = (req, res) => {
   const todoId = req.params.id;
   const { title, description, isCompleted } = req.body;
-  if (!title || !description || !isCompleted) {
-    return res
-      .status(400)
-      .json({ message: "Title, Description and Status is Required" });
-  }
+  const error = validateTodo(title, description, isCompleted);
+  if (error) return res.status(400).json({ message: error });
   Todo.updateTodo(title, description, isCompleted, todoId, (err, result) => {
     if (err) {
       console.error("Error Updating Todo");
