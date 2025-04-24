@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container container--initial">
+      <span>Enter your username</span>
+
+      <input class="textfield" type="text" name="username" id="username" />
+      <button type="button" class="btn" id="btn-chat" disabled>
+        Start chat
+      </button>
+    </div>
+    <div class="container container--message">
+      <form id="chat-form">
+        <ul id="chat-list"></ul>
+        <p id="typingIndicator" style="font-style: italic"></p>
+        <input
+          class="textfield"
+          type="text"
+          name="message"
+          id="message"
+          placeholder="Message.."
+        />
+      </form>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
