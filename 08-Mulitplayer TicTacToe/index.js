@@ -79,13 +79,10 @@ function resetGame() {
   gameState.winner = null;
   gameState.moves = 0;
 }
-let playerCount = 0;
+
 io.on("connect", (socket) => {
-  playerCount++;
-  console.log(playerCount);
   let playerId = players.player1 ? "player2" : "player1";
   players[playerId] = socket.id;
-  playerCount = Object.keys(players).length;
 
   console.log(players);
   if (io.engine.clientsCount > maxPlayers) {
