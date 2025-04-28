@@ -23,6 +23,7 @@
     </div>
     <div class="container container--message">
       <form id="chat-form">
+        <p id="roomIndicator" style="font-style: italic"></p>
         <ul id="chat-list"></ul>
         <p id="typingIndicator" style="font-style: italic"></p>
         <input
@@ -33,6 +34,20 @@
           placeholder="Message.."
         />
       </form>
+    </div>
+
+    <div class="container container--rooms">
+      <div class="room room--create">Create Room</div>
+      <div class="room room--join">Join Room</div>
+    </div>
+
+    <div class="container container--room-join">
+      <span>Enter Room ID </span>
+
+      <input class="textfield" type="text" name="roomID" id="roomID" />
+      <button type="button" class="btn" id="btn-roomID" disabled>
+        Room Id
+      </button>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>

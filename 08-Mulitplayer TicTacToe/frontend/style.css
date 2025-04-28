@@ -1,0 +1,72 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+}
+button {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+}
+.title {
+  display: flex;
+  margin-bottom: 20px;
+  align-items: center;
+
+  justify-content: space-around;
+  width: 550px;
+}
+.title__player {
+  display: flex;
+  font-size: 40px;
+}
+.title__turn {
+  font-size: 20px;
+  color: #fff;
+  opacity: 0.8;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+.container {
+  background-color: #192a32;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.gameboard {
+  height: 550px;
+  width: 550px;
+
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+}
+.cell {
+  display: flex;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  border-radius: 8px;
+}
+.title__btn button {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background-color: #a8bec9;
+  border: none;
+  color: #192a32;
+}
+.x-color {
+  color: #30c4be;
+}
+.o-color {
+  color: #f2b238;
+}
