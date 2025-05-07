@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form class="user-info">
+      <input type="text" placeholder="Enter your name" id="name" />
+      <input type="text" placeholder="Enter your balance" id="balance" />
+      <button type="submit">Submit</button>
+    </form>
+
+    <div class="user-cards"></div>
+    <div class="game-options" style="display: none">
+      <button id="place-bet">Place Bet</button>
+      <!-- <button id="see-cards">See Cards</button> -->
+      <button id="pack-cards">Pack</button>
+      <button id="show-cards">Show</button>
+    </div>
+    <div id="game-log"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="module" src="gameService.js"></script>
+  </body>
+</html>
