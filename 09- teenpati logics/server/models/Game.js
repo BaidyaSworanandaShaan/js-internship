@@ -98,22 +98,39 @@ export class Game {
 
   //   Pack cards
   foldPlayer(player) {
-    if (!player.hasFolded) {
-      player.hasFolded = true;
-      this.activePlayersCount--;
+    if (this.players[this.currentPlayerIndex].id !== player.id) {
+      return { success: false, message: "Please wait for your turn." };
+    }
+    if (player.hasFolded) {
+      return {
+        success: false,
+        message: "Card has already been folded. You can't bet.",
+      };
+    }
+
+    player.hasFolded = true;
+    this.activePlayersCount--;
+
+    if (this.activePlayersCount === 1) {
+      const activePlayers = this.getActivePlayers();
+      const winner = this.determineWinner(activePlayers);
+      return {
+        success: true,
+        message: `${player.name} initiated a show.`,
+        winner: winner,
+      };
+    } else {
+      this.nextTurn();
       console.log(
         `${player.name} has folded. Active players: ${this.activePlayersCount}`
       );
-
-      if (this.activePlayersCount === 1) {
-        const activePlayers = this.getActivePlayers();
-        this.determineWinner(activePlayers);
-      }
+      return {
+        success: true,
+        message: `${player.name} has folded. Active players: ${this.activePlayersCount}`,
+      };
     }
-    if (this.players[this.currentPlayerIndex].id === player.id) {
-      this.nextTurn();
-    }
-  } //   Show cards
+  }
+  //   Show cards
 
   showCards(player) {
     if (this.players[this.currentPlayerIndex].id === player.id) {
@@ -146,8 +163,12 @@ export class Game {
   }
   //   Whose turn is it to fold or bet
   getCurrentPlayer() {
-    console.log(`Turn to bet :  ${this.players[this.currentPlayerIndex].name}`);
-    return this.players[this.currentPlayerIndex];
+    if (this.players[this.currentPlayerIndex]) {
+      console.log(
+        `Turn to bet :  ${this.players[this.currentPlayerIndex].name}`
+      );
+      return this.players[this.currentPlayerIndex];
+    }
   }
   //   Next turn to fold or bet
   getNextPlayerIndex() {
@@ -401,10 +422,6 @@ export class Game {
   restartGame() {
     console.log("Restarting the game...");
 
-    // Reset deck and shuffle
-    this.deck = new Deck();
-    this.deck.shuffleDeck();
-
     // Reset players' hands and status
     this.players.forEach((player) => {
       player.hand = [];
@@ -412,14 +429,16 @@ export class Game {
       player.isBlind = true;
       player.currentBet = 0;
     });
-
+    // Reset deck and shuffle
+    this.deck = new Deck();
+    this.deck.shuffleDeck();
+    this.distributeCardsToPlayer();
     // Reset game-related variables
     this.activePlayersCount = this.players.length;
     this.totalBetAmount = 0;
     this.round++;
     this.minimumBetAmount = 10;
     this.currentPlayerIndex = 0;
-
     console.log("Game has been restarted. New round begins!");
   }
 }

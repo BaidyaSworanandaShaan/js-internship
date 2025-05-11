@@ -1,11 +1,14 @@
 const userInfoSection = document.querySelector(".user-info");
 const userCardSection = document.querySelector(".user-cards");
 const gameOptionsSection = document.querySelector(".game-options");
+const gameWinnerSection = document.getElementById("game-winner");
+const gameRestartSection = document.getElementById("game-restart");
 
 const placeBetBtn = document.getElementById("place-bet");
 const seeCardsBtn = document.getElementById("see-cards");
 const packCardsBtn = document.getElementById("pack-cards");
 const showCardsBtn = document.getElementById("show-cards");
+const log = document.getElementById("game-log");
 
 // Connect to the server
 const socket = io();
@@ -25,9 +28,13 @@ userInfoSection.addEventListener("submit", function (e) {
 // When connected to the server
 socket.on("connect", () => {
   console.log("User Connected with socket id: " + socket.id);
+  socket.emit("joinRoom", "room-1");
 });
 socket.on("totalPlayers", (playersData) => {
-  console.log("Total Players: " + playersData.length);
+  userInfoSection.innerHTML = "";
+  userInfoSection.innerHTML = `<span> You have connected to game. <br> Players Connected : ${
+    playersData.length
+  } <br> Remaining Players: ${3 - playersData.length} </span>`;
 });
 socket.on("gameStateUpdated", (updatedGame) => {
   console.log("Game state updated:", updatedGame);
@@ -42,13 +49,15 @@ socket.on("roomFull", () => {
 socket.on("readyForRound", () => {
   console.log("Ready to start the round!");
   userInfoSection.style.display = "none";
+  gameWinnerSection.textContent = "";
   gameOptionsSection.style.display = "block";
-  socket.emit("startRound");
+  log.innerHTML = "";
+
+  // socket.emit("startRound");
 });
 socket.on("currentBetTurn", (currentPlayer) => {
-  const log = document.getElementById("game-log");
-
   const p = document.createElement("p");
+
   p.textContent = `Game has started. Turn to Bet : ${currentPlayer.name}`;
   log.appendChild(p);
 });
@@ -61,17 +70,20 @@ placeBetBtn.addEventListener("click", () => {
 showCardsBtn.addEventListener("click", () => {
   socket.emit("showCards", socket.id);
 });
-
+packCardsBtn.addEventListener("click", () => {
+  socket.emit("packCards", socket.id);
+});
 socket.on("betPlaced", ({ message, currentPlayer }) => {
   displayMessage(message, currentPlayer);
 });
 socket.on("showCardMessage", ({ message, winner }) => {
   displayMessage(message, null, winner);
 });
+socket.on("playerDisconnect", () => {
+  displayMessage("Restarting due to player disconnection");
+});
 //Display PlaceBet Message
 function displayMessage(msg, currentPlayer = null, winner = null) {
-  const log = document.getElementById("game-log");
-
   const p = document.createElement("p");
   p.textContent = msg;
   log.appendChild(p);
@@ -93,7 +105,10 @@ function displayMessage(msg, currentPlayer = null, winner = null) {
         .join(", ")}
     `;
 
-    log.appendChild(winnerDiv);
+    gameWinnerSection.appendChild(winnerDiv);
+
+    gameOptionsSection.style.display = "none";
+    socket.emit("restartGame");
   }
 }
 
