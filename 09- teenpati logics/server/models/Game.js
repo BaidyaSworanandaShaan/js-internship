@@ -17,6 +17,7 @@ export class Game {
     this.round = 1;
     this.minimumBetAmount = 10;
     this.currentPlayerIndex = 0;
+    this.gameStarted = false;
   }
 
   addPlayers(player) {
@@ -44,9 +45,14 @@ export class Game {
     }
   }
   startGame() {
+    this.gameStarted = true;
     this.deck.shuffleDeck();
     this.distributeCardsToPlayer();
-    this.totalBetAmount = 0;
+    this.totalBetAmount = this.players.length * 10;
+
+    this.players.forEach((player) => {
+      player.balance -= 10;
+    });
     this.minimumBetAmount = 10;
     this.currentPlayerIndex = 0;
     this.round = 1;
@@ -116,7 +122,7 @@ export class Game {
       const winner = this.determineWinner(activePlayers);
       return {
         success: true,
-        message: `${player.name} initiated a show.`,
+        message: `${player.name} packed.`,
         winner: winner,
       };
     } else {
@@ -299,8 +305,8 @@ export class Game {
       sortedtieHandCards.push(sortedValues);
     });
 
-    console.log(ranks);
-    console.log(sortedtieHandCards);
+    console.log("Ranks:", ranks);
+    console.log("Sorted Tie Hands:", sortedtieHandCards);
 
     // Function to count the frequency of card values
     const countFrequency = (arr) => {
@@ -314,41 +320,34 @@ export class Game {
     // Compare the hands based on the frequency of card values
     const resultIndex = sortedtieHandCards.reduce(
       (maxIndex, currentArr, index) => {
-        // Count the frequency of the current hand's card values
         const currentFreq = countFrequency(currentArr);
         const maxFreq = countFrequency(sortedtieHandCards[maxIndex]);
 
-        // Compare the highest frequency card from both hands
         const maxCurrent = Math.max(...currentArr);
         const maxMaxIndex = Math.max(...sortedtieHandCards[maxIndex]);
 
-        // Compare frequencies first
         const maxCurrentFreq = Math.max(...Object.values(currentFreq));
         const maxMaxIndexFreq = Math.max(...Object.values(maxFreq));
 
-        // If the current hand has a higher frequency, update maxIndex
         if (maxCurrentFreq > maxMaxIndexFreq) {
           return index;
         }
 
-        // If frequencies are the same, compare the **highest card** from the most frequent card value
         if (maxCurrentFreq === maxMaxIndexFreq) {
-          // Find the card with the highest frequency and compare the largest of those
           const maxCurrentFreqCard = Math.max(
-            ...Object.keys(currentFreq).filter(
-              (key) => currentFreq[key] === maxCurrentFreq
-            )
+            ...Object.keys(currentFreq)
+              .filter((key) => currentFreq[key] === maxCurrentFreq)
+              .map(Number)
           );
           const maxMaxIndexFreqCard = Math.max(
-            ...Object.keys(maxFreq).filter(
-              (key) => maxFreq[key] === maxMaxIndexFreq
-            )
+            ...Object.keys(maxFreq)
+              .filter((key) => maxFreq[key] === maxMaxIndexFreq)
+              .map(Number)
           );
 
           if (maxCurrentFreqCard > maxMaxIndexFreqCard) {
             return index;
           } else if (maxCurrentFreqCard === maxMaxIndexFreqCard) {
-            // If they are still equal, use the highest card overall
             if (maxCurrent > maxMaxIndex) {
               return index;
             }
@@ -360,9 +359,7 @@ export class Game {
       0
     ); // Initialize with 0, which means the first player
 
-    const winnerIndex = resultIndex;
-
-    return winnerIndex; // Return the index of the winning player
+    return resultIndex;
   }
 
   findHighestHands(handTypeArr) {
@@ -421,7 +418,6 @@ export class Game {
   //   Restart Game
   restartGame() {
     console.log("Restarting the game...");
-
     // Reset players' hands and status
     this.players.forEach((player) => {
       player.hand = [];
@@ -429,16 +425,21 @@ export class Game {
       player.isBlind = true;
       player.currentBet = 0;
     });
+
     // Reset deck and shuffle
     this.deck = new Deck();
     this.deck.shuffleDeck();
     this.distributeCardsToPlayer();
     // Reset game-related variables
     this.activePlayersCount = this.players.length;
-    this.totalBetAmount = 0;
+    this.totalBetAmount = this.players.length * 10;
+    this.players.forEach((player) => {
+      player.balance -= 10;
+    });
     this.round++;
     this.minimumBetAmount = 10;
     this.currentPlayerIndex = 0;
     console.log("Game has been restarted. New round begins!");
+    console.log(this.players);
   }
 }

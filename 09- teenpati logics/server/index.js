@@ -3,35 +3,69 @@ import http from "http";
 import { Server } from "socket.io";
 
 import { Game } from "./models/Game.js";
-// import { playersData } from "./data/playerData.js";
+import { v4 as uuidv4 } from "uuid";
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
-
 app.use(express.static("../client/public"));
-const rooms = {};
 
-io.on("connection", (socket) => {
-  console.log("A user connected", socket.id);
+const rooms = {};
+const users = new Map();
+let restartScheduled = false;
+io.on("connect", (socket) => {
+  console.log("A user connected: " + socket.id);
+
+  socket.on("set username", (username) => {
+    users.set(socket.id, username);
+    console.log(`Username set for ${socket.id}: ${username}`);
+  });
+
+  socket.on("create room", () => {
+    const roomID = uuidv4();
+
+    rooms[roomID] = new Game();
+
+    socket.join(roomID);
+    socket.data.room = roomID;
+
+    const name = users.get(socket.id);
+    console.log(`${name} created and joined room: ${roomID}`);
+
+    socket.emit("room created", roomID);
+  });
+
+  // socket.on("disconnect", () => {
+  //   console.log(`User disconnected: ${socket.id}`);
+  //   removePlayerFromList(game.players, socket.id);
+  //   console.log(game.players);
+  //   io.to(roomName).emit("gameStateUpdated", game);
+  // });
 
   socket.on("joinRoom", (roomName) => {
-    socket.join(roomName);
+    console.log(`${socket.id} is attempting to join room: ${roomName}`);
 
     if (!rooms[roomName]) {
-      rooms[roomName] = new Game();
-    }
-    const game = rooms[roomName];
-    const playersData = game.players;
-
-    if (playersData.length >= 3) {
-      console.log("Room already has 3 players");
-      socket.emit("roomFull");
+      console.log("Room does not exist");
+      socket.emit("roomNotFound");
       return;
     }
+    const game = rooms[roomName];
+
+    if (game.gameStarted) {
+      console.log("Cannot join. Game already started.");
+      socket.emit("gameAlreadyStarted", {
+        message:
+          "You cannot join this room because the game has already started.",
+      });
+      return;
+    }
+    const playersData = game.players;
+    socket.join(roomName);
+    socket.data.room = roomName;
 
     socket.on("addPlayers", (newPlayerData) => {
-      const { name, balance } = newPlayerData;
+      const { name, balance, newRoomId } = newPlayerData;
 
       if (!name || balance === undefined) {
         console.log("Invalid player information");
@@ -54,23 +88,26 @@ io.on("connection", (socket) => {
       console.log("Players added:");
       console.log(playersData);
 
-      socket.emit("totalPlayers", playersData);
+      console.log("New Room Id: ", newRoomId);
 
-      // Start the game automatically when 3 players have joined
-      if (playersData.length === 3) {
-        console.log("Two players joined, starting the game...");
-        game.startGame();
-        io.to(roomName).emit("readyForRound");
-        io.to(roomName).emit("gameStateUpdated", game);
-        io.to(roomName).emit("currentBetTurn", game.getCurrentPlayer());
-      }
+      io.to(newRoomId).emit("totalPlayers", game.players);
+      io.to(newRoomId).emit("gameStateUpdated", game);
     });
 
-    socket.on("placeBet", (id) => {
+    socket.on("startGame", (roomId) => {
+      game.startGame();
+      io.to(roomId).emit("readyForRound");
+      setTimeout(() => {
+        io.to(roomId).emit("gameStateUpdated", game);
+        io.to(roomId).emit("currentBetTurn", game.getCurrentPlayer());
+      }, 100);
+    });
+
+    socket.on("placeBet", (id, betAmount) => {
       const player = game.players.find((player) => player.id === id);
       if (!player) return;
 
-      const result = game.placeBet(player, 10);
+      const result = game.placeBet(player, betAmount);
       const currentBetTurn = game.getCurrentPlayer();
       socket.emit("betPlaced", {
         message: result.message,
@@ -80,8 +117,8 @@ io.on("connection", (socket) => {
 
       if (result.success) {
         io.to(roomName).emit("gameStateUpdated", game);
-        socket.broadcast.emit("betPlaced", {
-          message: `${player.name} placed a bet of 10 coins.`,
+        io.to(roomName).emit("betPlaced", {
+          message: `${player.name} placed a bet of Rs ${betAmount} .`,
           playerId: player.id,
           currentPlayer: currentBetTurn.name,
         });
@@ -136,34 +173,48 @@ io.on("connection", (socket) => {
       }
     });
 
-    socket.on("restartGame", () => {
+    socket.on("requestRestartGame", () => {
+      if (restartScheduled) return;
+
+      restartScheduled = true;
       setTimeout(() => {
         game.restartGame();
         io.to(roomName).emit("readyForRound");
         io.to(roomName).emit("gameStateUpdated", game);
         io.to(roomName).emit("currentBetTurn", game.getCurrentPlayer());
+
+        restartScheduled = false;
       }, 5000);
     });
-
     socket.on("disconnect", () => {
-      // const alreadyExists = game.players.some(
-      //   (player) => player.id === socket.id
-      // );
       console.log(`User disconnected: ${socket.id}`);
-      removePlayerFromList(game.players, socket.id);
-      console.log(game.players);
-      io.to(roomName).emit("gameStateUpdated", game);
 
-      // if (alreadyExists) {
-      //   console.log("Restarting game due to player disconnection...");
-      //   io.to(roomName).emit("playerDisconnect");
-      //   setTimeout(() => {
-      //     game.restartGame();
-      //     io.to(roomName).emit("gameStateUpdated", game);
-      //     io.to(roomName).emit("readyForRound");
-      //     io.to(roomName).emit("currentBetTurn", game.getCurrentPlayer());
-      //   }, 2000);
-      // }
+      const player = game.players.find((player) => player.id === socket.id);
+      if (!player) return;
+
+      const result = game.foldPlayer(player);
+
+      if (result.winner && result.success) {
+        io.to(roomName).emit("gameStateUpdated", game);
+        io.to(roomName).emit("showCardMessage", {
+          message: result.message,
+          winner: result.winner,
+        });
+      } else if (result.success) {
+        io.to(roomName).emit("gameStateUpdated", game);
+        io.to(roomName).emit("betPlaced", {
+          message: result.message,
+          playerId: player.id,
+          currentPlayer: game.getCurrentPlayer().name,
+        });
+      } else {
+        socket.emit("betPlaced", {
+          message: result.message,
+          playerId: player.id,
+          currentPlayer: game.getCurrentPlayer().name,
+        });
+      }
+      removePlayerFromList(game.players, socket.id);
     });
   });
 
