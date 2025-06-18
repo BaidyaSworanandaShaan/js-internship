@@ -1,5 +1,13 @@
 export const gameInitial = document.querySelector(".game-initial");
 export const gameMain = document.querySelector(".game-main");
+
+export const showLoginBtn = document.getElementById("show-login");
+export const showSignUpBtn = document.getElementById("show-signup");
+export const signupBtn = document.getElementById("signup-btn");
+export const loginBtn = document.getElementById("login-btn");
+export const loginSection = document.getElementById("login-section");
+export const signUpSection = document.getElementById("signup-section");
+
 export const userInfoSection = document.querySelector(".user-info");
 export const userCardSection = document.querySelector(".user-cards");
 export const gameOptionsSection = document.querySelector(".game-options");

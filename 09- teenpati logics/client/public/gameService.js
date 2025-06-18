@@ -25,6 +25,21 @@ import {
   splashScreen,
 } from "./domSelectors.js";
 
+// fetch userStats from backend
+export async function fetchUserStats(username) {
+  try {
+    const response = await fetch(`/api/auth/getUserStats?username=${username}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch user stats");
+    }
+    const stats = await response.json();
+    return stats; // { total_balance, total_games_played }
+  } catch (err) {
+    console.error("Error:", err.message);
+    return null;
+  }
+}
+
 // Connect to the server
 let socket;
 let isRoomCreator = false;
@@ -220,7 +235,7 @@ function renderRoundLogs(msg, currentPlayer = null, winner = null) {
   table.appendChild(logDiv);
 }
 
-export function startSocketConfiguration(username) {
+export function startSocketConfiguration(username, balance) {
   socket = io();
   socket.on("connect", () => {
     console.log(username);
@@ -270,8 +285,8 @@ export function startSocketConfiguration(username) {
     }
   });
 
-  createRoomBtn.addEventListener("click", () => createRoom(username));
-  joinRoomBtn.addEventListener("click", () => joinRoomUI(username));
+  createRoomBtn.addEventListener("click", () => createRoom(username, balance));
+  joinRoomBtn.addEventListener("click", () => joinRoomUI(username, balance));
   placeBetBtn.addEventListener("click", () => {
     const selected = document.querySelector('input[name="bet-amount"]:checked');
     const betAmount = parseInt(selected.value);
@@ -288,14 +303,14 @@ export function startSocketConfiguration(username) {
 
 // Create Room
 
-function createRoom(name) {
+function createRoom(name, balance) {
   if (socket) {
     console.log(name);
     socket.emit("create room");
     socket.once("room created", (newRoomId) => {
       currentRoomId = newRoomId;
       socket.emit("joinRoom", newRoomId);
-      socket.emit("addPlayers", { name, balance: 1000, newRoomId });
+      socket.emit("addPlayers", { name, balance: balance, newRoomId });
 
       renderInitialGameScreen(newRoomId);
     });
@@ -305,22 +320,22 @@ function createRoom(name) {
 
 // Join Room
 
-function joinRoomUI(username) {
+function joinRoomUI(username, balance) {
   lobbySelectionScreen.style.display = "none";
   joinRoomScreen.style.display = "flex";
 
   btnJoinRoom.addEventListener("click", () => {
     const roomId = roomIdInputEl.value.trim();
 
-    joinToExistingRoom(roomId, username);
+    joinToExistingRoom(roomId, username, balance);
   });
 }
 
 console.log("GameStarted: " + gameStarted);
 
-function joinToExistingRoom(newRoomId, name) {
+function joinToExistingRoom(newRoomId, name, balance) {
   socket.emit("joinRoom", newRoomId);
-  socket.emit("addPlayers", { name, balance: 1000, newRoomId });
+  socket.emit("addPlayers", { name, balance: balance, newRoomId });
 
   renderInitialGameScreen(newRoomId);
 }

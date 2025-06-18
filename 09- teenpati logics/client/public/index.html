@@ -28,7 +28,7 @@
         <button class="btn" id="splash-continue-btn">Continue to Game</button>
       </div>
       <div class="playerDetail-screen">
-        <h2 class="username-title">Enter your nickname</h2>
+        <!-- <h2 class="username-title">Enter your nickname</h2>
         <p class="sub-title username-sub">
           Let the world know who’s about to win big.
         </p>
@@ -41,7 +41,54 @@
         />
         <button type="button" class="btn" id="btn-username" disabled>
           Proceed
-        </button>
+        </button> -->
+        <div class="auth-screen">
+          <h2>Welcome to Royal Flush</h2>
+          <p class="sub-title">
+            New here? Sign up. Already a player? Log in and let's shuffle!
+          </p>
+          <!-- Toggle Buttons -->
+          <div class="auth-toggle-buttons">
+            <button id="show-login" class="btn-active">Log In</button>
+            <button id="show-signup">Sign Up</button>
+          </div>
+
+          <!-- Signup Section -->
+          <div class="auth-section" id="signup-section" style="display: none">
+            <h3>Sign Up</h3>
+            <input
+              type="text"
+              id="signup-username"
+              placeholder="Username"
+              class="textfield"
+            />
+            <input
+              type="password"
+              id="signup-password"
+              placeholder="Password"
+              class="textfield"
+            />
+            <button class="btn" id="signup-btn">Sign Up</button>
+          </div>
+
+          <!-- Login Section -->
+          <div class="auth-section" id="login-section" style="display: flex">
+            <h3>Login</h3>
+            <input
+              type="text"
+              id="login-username"
+              placeholder="Username"
+              class="textfield"
+            />
+            <input
+              type="password"
+              id="login-password"
+              placeholder="Password"
+              class="textfield"
+            />
+            <button class="btn" id="login-btn">Log In</button>
+          </div>
+        </div>
       </div>
       <div class="lobby-selection-screen">
         <h2 class="lobby-welcome-message">
@@ -113,13 +160,19 @@
       </div>
     </div>
 
-    <!-- <form class="user-info">
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="module" src="auth.js"></script>
+    <script type="module" src="gameService.js"></script>
+    <script type="module" src="gameUI.js"></script>
+  </body>
+</html>
+<!-- <form class="user-info">
       <input type="text" placeholder="Enter your name" id="name" />
       <input type="text" placeholder="Enter your balance" id="balance" />
       <button type="submit">Submit</button>
     </form> -->
 
-    <!-- <div class="user-cards"></div>
+<!-- <div class="user-cards"></div>
     <div class="game-options" style="display: none">
       <button id="place-bet">Place Bet</button>
 
@@ -129,8 +182,3 @@
     <div id="game-log"></div>
     <div id="game-winner"></div>
     <div id="game-restart"></div> -->
-    <script src="/socket.io/socket.io.js"></script>
-    <script type="module" src="gameService.js"></script>
-    <script type="module" src="gameUI.js"></script>
-  </body>
-</html>

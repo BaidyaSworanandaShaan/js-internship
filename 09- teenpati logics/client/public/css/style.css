@@ -102,7 +102,34 @@ h3 {
   font-size: 18px;
   margin: 10px 0 20px 0;
 }
+.auth-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
 
+.auth-toggle-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px;
+}
+.auth-toggle-buttons button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+.btn-active {
+  font-weight: bold;
+  color: #001242 !important;
+  font-weight: bold;
+  background-color: #ffd700 !important;
+
+  padding: 5px 8px;
+  border-radius: 31px;
+}
 /* Player Username */
 
 .playerDetail-screen {
@@ -121,7 +148,7 @@ h3 {
   border-bottom: 4px solid #fff8e7;
   height: 40px;
   margin-left: 20px;
-  font-size: 25px;
+  font-size: 20px;
   text-align: center;
   margin: 20px 0;
   width: 100%;

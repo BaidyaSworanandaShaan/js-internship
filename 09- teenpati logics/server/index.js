@@ -1,15 +1,17 @@
 import express from "express";
 import http from "http";
 import { Server } from "socket.io";
-
+import authRoutes from "./routes/authRoutes.js";
 import { Game } from "./models/Game.js";
 import { v4 as uuidv4 } from "uuid";
+import { incrementGamesPlayed, updateUserBalance } from "./config/userModel.js";
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 app.use(express.static("../client/public"));
-
+app.use(express.json());
+app.use("/api/auth", authRoutes);
 const rooms = {};
 const users = new Map();
 let restartScheduled = false;
@@ -103,7 +105,7 @@ io.on("connect", (socket) => {
       }, 100);
     });
 
-    socket.on("placeBet", (id, betAmount) => {
+    socket.on("placeBet", async (id, betAmount) => {
       const player = game.players.find((player) => player.id === id);
       if (!player) return;
 
@@ -122,10 +124,15 @@ io.on("connect", (socket) => {
           playerId: player.id,
           currentPlayer: currentBetTurn.name,
         });
+        try {
+          await updateUserBalance(player.name, player.balance);
+        } catch (error) {
+          console.error("Error updating user balance:", error);
+        }
       }
     });
 
-    socket.on("showCards", (id) => {
+    socket.on("showCards", async (id) => {
       const player = game.players.find((player) => player.id === id);
 
       if (!player) return;
@@ -137,6 +144,12 @@ io.on("connect", (socket) => {
           message: result.message,
           winner: result.winner,
         });
+
+        try {
+          await updateUserBalance(player.name, player.balance);
+        } catch (error) {
+          console.error("Error updating user balance:", error);
+        }
       } else {
         socket.emit("showCardMessage", {
           message: result.message,
@@ -144,12 +157,18 @@ io.on("connect", (socket) => {
       }
     });
 
-    socket.on("packCards", (id) => {
+    socket.on("packCards", async (id) => {
       const player = game.players.find((player) => player.id === id);
       if (!player) return;
 
       const result = game.foldPlayer(player);
-
+      if (result.success) {
+        try {
+          await updateUserBalance(player.name, player.balance);
+        } catch (error) {
+          console.error("Error updating user balance:", error);
+        }
+      }
       if (result.winner && result.success) {
         io.to(roomName).emit("gameStateUpdated", game);
         io.to(roomName).emit("showCardMessage", {
@@ -173,16 +192,22 @@ io.on("connect", (socket) => {
       }
     });
 
-    socket.on("requestRestartGame", () => {
+    socket.on("requestRestartGame", async () => {
       if (restartScheduled) return;
 
       restartScheduled = true;
-      setTimeout(() => {
+      setTimeout(async () => {
         game.restartGame();
         io.to(roomName).emit("readyForRound");
         io.to(roomName).emit("gameStateUpdated", game);
         io.to(roomName).emit("currentBetTurn", game.getCurrentPlayer());
-
+        try {
+          for (const player of game.players) {
+            await incrementGamesPlayed(player.name);
+          }
+        } catch (error) {
+          console.error("Error incrementing games played:", error);
+        }
         restartScheduled = false;
       }, 5000);
     });
