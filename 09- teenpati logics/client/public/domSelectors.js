@@ -7,7 +7,7 @@ export const signupBtn = document.getElementById("signup-btn");
 export const loginBtn = document.getElementById("login-btn");
 export const loginSection = document.getElementById("login-section");
 export const signUpSection = document.getElementById("signup-section");
-
+export const goBackBtn = document.getElementById("goBackBtn");
 export const userInfoSection = document.querySelector(".user-info");
 export const userCardSection = document.querySelector(".user-cards");
 export const gameOptionsSection = document.querySelector(".game-options");
@@ -42,3 +42,8 @@ export const roomIdInputEl = document.getElementById("roomId-input");
 export const btnJoinRoom = document.getElementById("btn-joinRoom");
 export const startGameBtn = document.getElementById("startGameBtn");
 export const betAmountEl = document.getElementById("bet-amount");
+
+export const clickSound = new Audio("../audio/button-click.mp3");
+export const switchSound = new Audio("../audio/switch.mp3");
+export const backgroundSound = new Audio("../audio/background-music.mp3");
+export const betPlaceSound = new Audio("../audio/bet-place.wav");

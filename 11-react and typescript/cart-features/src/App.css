@@ -1,0 +1,32 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.product-lists {
+  display: flex;
+  gap: 20px;
+}
+.product-price {
+  display: block;
+}
+.product-category {
+  display: block;
+  margin: 10px 0;
+}
+.btn-add {
+  display: block;
+}
+.cart-item {
+  margin: 20px 0;
+}
+.cart-items {
+  display: flex;
+  gap: 40px;
+}

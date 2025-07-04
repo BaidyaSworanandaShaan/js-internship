@@ -1,12 +1,14 @@
 import {
+  clickSound,
   lobbySelectionScreen,
   loginBtn,
   signupBtn,
-  usernameEl,
 } from "./domSelectors.js";
 import { fetchUserStats, startSocketConfiguration } from "./gameService.js";
 
 signupBtn.addEventListener("click", async () => {
+  clickSound.currentTime = 0; // rewind to start
+  clickSound.play();
   const username = document.getElementById("signup-username").value.trim();
   const password = document.getElementById("signup-password").value.trim();
 
@@ -25,6 +27,8 @@ signupBtn.addEventListener("click", async () => {
 });
 
 loginBtn.addEventListener("click", async () => {
+  clickSound.currentTime = 0; // rewind to start
+  clickSound.play();
   const username = document.getElementById("login-username").value.trim();
   const password = document.getElementById("login-password").value.trim();
 

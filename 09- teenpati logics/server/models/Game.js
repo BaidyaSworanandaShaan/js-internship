@@ -104,7 +104,7 @@ export class Game {
 
   //   Pack cards
   foldPlayer(player) {
-    if (this.players[this.currentPlayerIndex].id !== player.id) {
+    if (this.players[this.currentPlayerIndex]?.id !== player.id) {
       return { success: false, message: "Please wait for your turn." };
     }
     if (player.hasFolded) {
@@ -383,6 +383,10 @@ export class Game {
   // Determine Winner
 
   determineWinner(activePlayers) {
+    if (!activePlayers || activePlayers.length === 0) {
+      console.log("No active players left.");
+      return null;
+    }
     let winner;
     let winnerIndex = -1;
     const { ranks, suits } = this.getSuitsAndRanksArray(activePlayers);

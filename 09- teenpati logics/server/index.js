@@ -118,9 +118,10 @@ io.on("connect", (socket) => {
       });
 
       if (result.success) {
+        io.to(roomName).emit("betSoundEffect");
         io.to(roomName).emit("gameStateUpdated", game);
         io.to(roomName).emit("betPlaced", {
-          message: `${player.name} placed a bet of Rs ${betAmount} .`,
+          message: `${player.name} bets Rs ${betAmount} .`,
           playerId: player.id,
           currentPlayer: currentBetTurn.name,
         });
@@ -181,13 +182,13 @@ io.on("connect", (socket) => {
         io.to(roomName).emit("betPlaced", {
           message: result.message,
           playerId: player.id,
-          currentPlayer: game.getCurrentPlayer().name,
+          currentPlayer: game.getCurrentPlayer()?.name || null,
         });
       } else {
         socket.emit("betPlaced", {
           message: result.message,
           playerId: player.id,
-          currentPlayer: game.getCurrentPlayer().name,
+          currentPlayer: game.getCurrentPlayer()?.name || null,
         });
       }
     });
@@ -230,13 +231,13 @@ io.on("connect", (socket) => {
         io.to(roomName).emit("betPlaced", {
           message: result.message,
           playerId: player.id,
-          currentPlayer: game.getCurrentPlayer().name,
+          currentPlayer: game.getCurrentPlayer()?.name || null,
         });
       } else {
         socket.emit("betPlaced", {
           message: result.message,
           playerId: player.id,
-          currentPlayer: game.getCurrentPlayer().name,
+          currentPlayer: game.getCurrentPlayer()?.name || null,
         });
       }
       removePlayerFromList(game.players, socket.id);

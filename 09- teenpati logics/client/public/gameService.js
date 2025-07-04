@@ -23,8 +23,21 @@ import {
   gameMain,
   betAmountEl,
   splashScreen,
+  clickSound,
+  backgroundSound,
+  betPlaceSound,
 } from "./domSelectors.js";
 
+function speak(text) {
+  const msg = new SpeechSynthesisUtterance(text);
+  msg.lang = "en-US";
+  msg.pitch = 1.2;
+  msg.rate = 1.2;
+  msg.volume = 0.9;
+
+  window.speechSynthesis.cancel(); // stop any previous speech
+  window.speechSynthesis.speak(msg);
+}
 // fetch userStats from backend
 export async function fetchUserStats(username) {
   try {
@@ -90,7 +103,7 @@ function renderPlayersOnTable(players, updatedGame, mySocketId) {
 
     const playerDiv = document.createElement("div");
     playerDiv.className = "player";
-
+    playerDiv.dataset.id = player.id;
     playerDiv.style.left = `${x}px`;
     playerDiv.style.top = `${y}px`;
 
@@ -124,6 +137,40 @@ function renderPlayersOnTable(players, updatedGame, mySocketId) {
     player.position = { x, y, angle }; // store position for cards
   });
 }
+// function animateCoinFromPlayerToPot(playerId) {
+//   const playerEl = document.querySelector(`.player[data-id="${playerId}"]`);
+//   const potEl = document.querySelector(".round-pot");
+//   const tableEl = document.getElementById("table");
+
+//   if (!playerEl || !potEl || !tableEl) return;
+
+//   const tableRect = tableEl.getBoundingClientRect();
+//   const playerRect = playerEl.getBoundingClientRect();
+//   const potRect = potEl.getBoundingClientRect();
+
+//   const startX = playerRect.left + playerRect.width / 2 - tableRect.left;
+//   const startY = playerRect.top + playerRect.height / 2 - tableRect.top;
+//   const endX = potRect.left + potRect.width / 2 - tableRect.left;
+//   const endY = potRect.top + potRect.height / 2 - tableRect.top;
+
+//   const dx = endX - startX;
+//   const dy = endY - startY;
+
+//   const coin = document.createElement("div");
+//   coin.className = "coin-animate";
+//   coin.style.left = `${startX}px`;
+//   coin.style.top = `${startY}px`;
+//   coin.style.transform = "translate(0, 0)";
+
+//   tableEl.appendChild(coin); // <== append to #table not body
+
+//   requestAnimationFrame(() => {
+//     coin.style.transform = `translate(${dx}px, ${dy}px)`;
+//   });
+
+//   setTimeout(() => coin.remove(), 800);
+// }
+
 function renderCardsNearPlayers(players) {
   const table = document.getElementById("table");
   const { width: tableWidth, height: tableHeight } =
@@ -219,6 +266,7 @@ function renderRoundLogs(msg, currentPlayer = null, winner = null) {
 
   const p = document.createElement("p");
   p.textContent = msg;
+  speak(msg);
   logDiv.appendChild(p);
 
   const turnSpan = document.createElement("span");
@@ -255,10 +303,14 @@ export function startSocketConfiguration(username, balance) {
   });
   socket.on("readyForRound", () => {
     console.log("Ready to start the round!");
+    speak(`Ready to start the round!`);
     gameInitial.style.display = "none";
     gameMain.style.display = "flex";
     gameStarted = true;
     finalWinner = false;
+    backgroundSound.volume = 0.2;
+    backgroundSound.currentTime = 0; // rewind to start
+    backgroundSound.play();
   });
   socket.on("gameStateUpdated", (updatedGame) => {
     console.log("Game state updated:", updatedGame);
@@ -271,6 +323,17 @@ export function startSocketConfiguration(username, balance) {
     }
     socket.on("betPlaced", ({ message, currentPlayer }) => {
       renderRoundLogs(message, currentPlayer);
+
+      // const bettingPlayer = lastRotatedPlayers.find(
+      //   (p) => p.name === currentPlayer
+      // );
+      // if (bettingPlayer) {
+      //   animateCoinFromPlayerToPot(bettingPlayer.id);
+      // }
+    });
+    socket.on("betSoundEffect", () => {
+      betPlaceSound.currentTime = 0; // rewind to start
+      betPlaceSound.play();
     });
   });
   socket.on("showCardMessage", ({ message, winner }) => {
@@ -285,8 +348,16 @@ export function startSocketConfiguration(username, balance) {
     }
   });
 
-  createRoomBtn.addEventListener("click", () => createRoom(username, balance));
-  joinRoomBtn.addEventListener("click", () => joinRoomUI(username, balance));
+  createRoomBtn.addEventListener("click", () => {
+    clickSound.currentTime = 0; // rewind to start
+    clickSound.play();
+    createRoom(username, balance);
+  });
+  joinRoomBtn.addEventListener("click", () => {
+    clickSound.currentTime = 0; // rewind to start
+    clickSound.play();
+    joinRoomUI(username, balance);
+  });
   placeBetBtn.addEventListener("click", () => {
     const selected = document.querySelector('input[name="bet-amount"]:checked');
     const betAmount = parseInt(selected.value);
