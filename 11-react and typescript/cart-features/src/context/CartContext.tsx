@@ -5,7 +5,10 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
-import type { ProductTypes } from "../types/productTypes";
+import type { ProductTypes } from "../types/ProductTypes";
+import type { CartItem } from "../types/CartItem";
+import type { CartState } from "../types/CartState";
+import type { CartAction } from "../types/CartAction";
 
 export enum CartEvents {
   ADD_TO_CART,
@@ -13,18 +16,6 @@ export enum CartEvents {
   INCREMENT,
   DECREMENT,
 }
-
-type CartItem = ProductTypes & { quantity: number };
-
-type CartState = {
-  cart: CartItem[];
-};
-
-type CartAction =
-  | { type: CartEvents.ADD_TO_CART; payload: CartItem }
-  | { type: CartEvents.REMOVE_FROM_CART; payload: number }
-  | { type: CartEvents.INCREMENT; payload: number }
-  | { type: CartEvents.DECREMENT; payload: number };
 
 const getCartFromStorage = () => {
   const stored = localStorage.getItem("cart");

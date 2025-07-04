@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import type { ProductTypes } from "../types/productTypes";
+import type { ProductTypes } from "../types/ProductTypes";
 import { CartEvents, useCart } from "../context/CartContext";
 
 type Props = {
