@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "name": "Nike Revolution 6 Running Shoes",
+    "img": "/assets/running-shoes.png",
+    "categories": "Running Shoes",
+    "desc": "Lightweight and comfortable running shoes designed for daily workouts and long runs.",
+    "price": 129
+  },
+  {
+    "id": 2,
+    "name": "Converse Chuck Taylor All Star",
+    "img": "/assets/blue-converse-sneakers-free-png.webp",
+    "categories": "Casual Sneakers",
+    "desc": "Classic high-top sneakers with durable canvas and rubber sole, perfect for everyday.",
+    "price": 79
+  },
+  {
+    "id": 3,
+    "name": "Vans Old Skool Black White",
+    "img": "/assets/vans.png",
+    "categories": "Skateboarding Shoes",
+    "desc": "Iconic low-top skate shoes with suede and canvas upper, known for durability and style.",
+    "price": 85
+  },
+  {
+    "id": 4,
+    "name": "Nike Futsal Shoes",
+    "img": "/assets/futsal-shoes.png",
+    "categories": "Futsal Shoes",
+    "desc": "Iconic low-top skate shoes with suede and canvas upper, known for durability and style.",
+    "price": 85
+  }
+]

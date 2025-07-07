@@ -1,12 +1,5 @@
-import React, {
-  createContext,
-  useContext,
-  useReducer,
-  ReactNode,
-  useEffect,
-} from "react";
-import type { ProductTypes } from "../types/ProductTypes";
-import type { CartItem } from "../types/CartItem";
+import React, { createContext, useContext, useReducer, useEffect } from "react";
+
 import type { CartState } from "../types/CartState";
 import type { CartAction } from "../types/CartAction";
 
